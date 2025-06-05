@@ -6,6 +6,7 @@ import 'package:projekakhir_praktpm/views/plants/plant_list_screen.dart';
 import 'package:projekakhir_praktpm/views/plants/my_plants_screen.dart';
 import 'package:projekakhir_praktpm/views/auth/profile_screen.dart';
 import 'package:projekakhir_praktpm/utils/constants.dart';
+import 'package:projekakhir_praktpm/views/weather/weather_screen.dart'; 
 
 class HomeWrapper extends StatefulWidget {
   const HomeWrapper({super.key});
@@ -20,6 +21,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
   final List<Widget> _pages = [
     const PlantListScreen(),
     const MyPlantsScreen(),
+    const WeatherScreen(),
     const ProfileScreen(),
   ];
 
@@ -31,7 +33,7 @@ class _HomeWrapperState extends State<HomeWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    final userPresenter = context.watch<UserPresenter>();
+    // final userPresenter = context.watch<UserPresenter>();
    
 
     return Scaffold(
@@ -52,7 +54,9 @@ class _HomeWrapperState extends State<HomeWrapper> {
                   ? 'Dashboard Tanaman'
                   : _selectedIndex == 1
                       ? 'Tanaman Favorit'
-                      : 'Profil Pengguna',
+                      : _selectedIndex == 2 // TAMBAHAN: Judul untuk Peta
+                          ? 'Cek Cuaca' // Ganti dengan judul yang Anda inginkan untuk peta
+                          : 'Profil Pengguna', // Ini akan untuk index 3 sekarang
               style: TextStyle(color: AppColors.textColor),
             ),
           ],
@@ -83,7 +87,8 @@ class _HomeWrapperState extends State<HomeWrapper> {
             children: [
               _buildNavBarItem(0, Icons.grass, 'Tanaman'),
               _buildNavBarItem(1, Icons.favorite, 'Favorit'),
-              _buildNavBarItem(2, Icons.person, 'Profil'),
+              _buildNavBarItem(2, Icons.map_outlined, 'Cuaca'),
+              _buildNavBarItem(3, Icons.person, 'Profil'),
             ],
           ),
         ),

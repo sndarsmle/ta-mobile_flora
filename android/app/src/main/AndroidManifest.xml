@@ -1,8 +1,13 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="com.example.projekakhir_praktpm">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <application
         android:label="projekakhir_praktpm"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="MAPBOX_ACCESS_TOKEN"
+                   android:value="pk.eyJ1Ijoic25kYXJzbWxlIiwiYSI6ImNtYmpkODZzajBlejUycXE2dWlkZnhzMDUifQ.FUHHWWVi_Q2Z7g18JPhyrA" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

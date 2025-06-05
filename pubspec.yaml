@@ -33,6 +33,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_timezone: ^4.1.1
+  geolocator: ^14.0.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   http: ^1.4.0

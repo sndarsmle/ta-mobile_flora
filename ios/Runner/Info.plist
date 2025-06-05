@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	
+	<key>MBXAccessToken</key>
+    <string>pk.eyJ1Ijoic25kYXJzbWxlIiwiYSI6ImNtYmpkODZzajBlejUycXE2dWlkZnhzMDUifQ.FUHHWWVi_Q2Z7g18JPhyrA</string> <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Aplikasi ini memerlukan akses lokasi untuk menampilkan toko tanaman di sekitar Anda dan menunjukkan posisi Anda di peta.</string> 
 </dict>
 </plist>
