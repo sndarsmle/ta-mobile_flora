@@ -7,16 +7,18 @@ plugins {
 
 android {
     namespace = "com.example.projekakhir_praktpm"
-    compileSdk = flutter.compileSdkVersion
+    // ===============================================
+    // PERUBAHAN UTAMA DI SINI: UBAH 34 MENJADI 35
+    // ===============================================
+    compileSdk = 35
+    // ===============================================
+
     ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-
         isCoreLibraryDesugaringEnabled = true
-
-        
     }
 
     kotlinOptions {
@@ -28,10 +30,10 @@ android {
         applicationId = "com.example.projekakhir_praktpm"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdk = 21 // Mengatur minSdk secara eksplisit lebih baik
+        targetSdk = 34 // targetSdk bisa tetap 34, tidak masalah
+        versionCode = 1
+        versionName = "1.0.0"
     }
 
     buildTypes {
@@ -47,10 +49,10 @@ flutter {
     source = "../.."
 }
 
-// 5. Tambahkan blok dependencies jika belum ada, atau tambahkan baris desugar ke dalamnya
+// Blok dependencies ini sudah benar, pertahankan saja.
 dependencies {
     // Dependensi lain yang mungkin sudah ada...
 
     // Tambahkan baris ini untuk core library desugaring
-    add("coreLibraryDesugaring", "com.android.tools:desugar_jdk_libs:2.0.4") // <--- TAMBAHKAN INI
+    add("coreLibraryDesugaring", "com.android.tools:desugar_jdk_libs:2.0.4")
 }

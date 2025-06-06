@@ -5,6 +5,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:intl/date_symbol_data_local.dart';
 // Services
 import 'package:projekakhir_praktpm/services/hive_service.dart';
+import 'package:projekakhir_praktpm/services/notification_service.dart';
 
 // Utils
 import 'package:projekakhir_praktpm/utils/constants.dart'; 
@@ -38,7 +39,8 @@ import 'package:projekakhir_praktpm/views/tools/time_converter_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  
+  await NotificationService().init();
   await initializeDateFormatting('id_ID', null);
 
   tz.initializeTimeZones();

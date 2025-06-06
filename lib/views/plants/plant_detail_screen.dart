@@ -9,6 +9,9 @@ import 'package:projekakhir_praktpm/presenters/plant_presenter.dart';
 import 'package:projekakhir_praktpm/utils/constants.dart';
 import 'package:projekakhir_praktpm/views/comments/comment_section.dart';
 
+import 'package:projekakhir_praktpm/services/notification_service.dart';
+import 'dart:math';
+
 class PlantDetailScreen extends StatefulWidget {
   final Plant plant; // Ini adalah plant dari list, mungkin minim info
   const PlantDetailScreen({super.key, required this.plant});
@@ -76,6 +79,69 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
         duration: const Duration(seconds: 3),
       ),
     );
+  }
+
+  Future<void> _scheduleNotification(BuildContext context, Plant plant) async {
+    final now = DateTime.now();
+    
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: now,
+      lastDate: DateTime(2101),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.dark( // Agar tema date picker cocok
+              primary: AppColors.accentColor,
+              onPrimary: AppColors.primaryColor,
+              onSurface: AppColors.textColor,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedDate != null && context.mounted) {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(now),
+         builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+               colorScheme: const ColorScheme.dark( // Agar tema time picker cocok
+                primary: AppColors.accentColor,
+                onPrimary: AppColors.primaryColor,
+                onSurface: AppColors.textColor,
+              ),
+            ),
+            child: child!,
+          );
+        },
+      );
+
+      if (pickedTime != null && context.mounted) {
+        final DateTime scheduledDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+
+        if (scheduledDateTime.isAfter(now)) {
+          NotificationService().scheduleWateringNotification(
+            id: Random().nextInt(100000),
+            plantName: plant.commonName,
+            scheduledTime: scheduledDateTime,
+          );
+          _showSuccessSnackbar('Pengingat untuk ${plant.commonName} telah diatur!');
+        } else {
+          _showErrorSnackbar('Waktu yang dipilih sudah lewat.');
+        }
+      }
+    }
   }
 
   String getImageUrl(Map<String, dynamic>? defaultImage) {
@@ -195,7 +261,23 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
                       _buildInfoRow('Deskripsi', displayPlant.description), //
                       
                       // --- TOMBOL NAVIGASI KE CURRENCY CONVERTER ---
-                      const SizedBox(height: AppPadding.mediumPadding), //
+                      const SizedBox(height: AppPadding.mediumPadding),
+                      
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.notifications_active_outlined, color: AppColors.primaryColor),
+                        label: Text(
+                          'Setel Pengingat Siram',
+                          style: TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.bold)
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(45),
+                          backgroundColor: AppColors.accentColor,
+                        ),
+                         onPressed: () => _scheduleNotification(context, displayPlant),
+                      ),
+
+                      const SizedBox(height: AppPadding.smallPadding),
+                       //
                       ElevatedButton.icon(
                         icon: const Icon(Icons.price_change_outlined, color: AppColors.primaryColor), //
                         label: Text(
