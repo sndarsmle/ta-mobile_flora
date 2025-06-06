@@ -1,4 +1,3 @@
-// lib/views/plants/my_plants_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:projekakhir_praktpm/presenters/bookmark_presenter.dart';

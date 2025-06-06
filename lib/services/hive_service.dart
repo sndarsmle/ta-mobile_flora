@@ -1,10 +1,9 @@
-// lib/services/hive_service.dart
 import 'dart:convert';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:projekakhir_praktpm/models/user_model.dart';
 import 'package:projekakhir_praktpm/models/plant_model.dart';
 import 'package:projekakhir_praktpm/models/comment_model.dart';
-import 'package:projekakhir_praktpm/models/budget_item_model.dart'; // IMPORT BARU
+import 'package:projekakhir_praktpm/models/budget_item_model.dart'; 
 
 class HiveService {
   static final HiveService _instance = HiveService._internal();
@@ -15,7 +14,7 @@ class HiveService {
   late Box<String> _sessionBox;
   late Box<User> _allUsersBox;
   late Box<Bookmark> _bookmarkBox;
-  late Box<BudgetItem> _budgetBox; // BOX BARU
+  late Box<BudgetItem> _budgetBox; 
 
   bool _isInitialized = false;
 
@@ -27,20 +26,17 @@ class HiveService {
       if (!Hive.isAdapterRegistered(1)) Hive.registerAdapter(PlantAdapter());
       if (!Hive.isAdapterRegistered(2)) Hive.registerAdapter(BookmarkAdapter());
       if (!Hive.isAdapterRegistered(3)) Hive.registerAdapter(CommentAdapter());
-      if (!Hive.isAdapterRegistered(4)) Hive.registerAdapter(BudgetItemAdapter()); // DAFTARKAN ADAPTER BARU
+      if (!Hive.isAdapterRegistered(4)) Hive.registerAdapter(BudgetItemAdapter()); 
 
       _userBox = await Hive.openBox<User>('current_user_box');
       _sessionBox = await Hive.openBox<String>('session_box');
       _allUsersBox = await Hive.openBox<User>('all_registered_users_box');
       _bookmarkBox = await Hive.openBox<Bookmark>('bookmarks_box');
-      _budgetBox = await Hive.openBox<BudgetItem>('budget_items_box'); // BUKA BOX BARU
+      _budgetBox = await Hive.openBox<BudgetItem>('budget_items_box'); 
 
       _isInitialized = true;
     }
   }
-
-  // ... (metode User, Session, Comment, Bookmark yang sudah ada) ...
-  // Pastikan semua metode yang ada sebelumnya tetap di sini
 
   Future<void> saveUser(User user) async {
     await init();
@@ -56,8 +52,6 @@ class HiveService {
     await init();
     await _userBox.clear();
     await _sessionBox.clear();
-    // Pertimbangkan apakah _budgetBox juga perlu di-clear saat logout jika budget bersifat per user
-    // Untuk saat ini, kita biarkan global
   }
 
   Future<void> saveRegisteredUser(User user) async {
@@ -146,8 +140,6 @@ class HiveService {
 
   List<Bookmark> getAllBookmarks() {
     if (!_isInitialized || !_bookmarkBox.isOpen) {
-     // Bisa throw error atau return list kosong, atau panggil init() lagi
-     // Untuk robust, pastikan init() dipanggil sebelum presenter mengakses ini
      return [];
     }
     return _bookmarkBox.values.toList();
@@ -158,15 +150,13 @@ class HiveService {
     return _bookmarkBox.containsKey(plantId);
   }
 
-  // METODE BARU UNTUK BUDGET ITEM
   Future<void> addBudgetItem(BudgetItem item) async {
-    await init(); // Pastikan box sudah siap
+    await init(); 
     await _budgetBox.put(item.id, item);
   }
 
   List<BudgetItem> getBudgetItemsForUser(String userId) {
     if (!_isInitialized || !_budgetBox.isOpen) return [];
-    // Ambil semua item, lalu filter berdasarkan userId
     return _budgetBox.values.where((item) => item.userId == userId).toList();
   }
 

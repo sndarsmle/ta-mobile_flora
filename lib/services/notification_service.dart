@@ -29,7 +29,7 @@ class NotificationService {
   Future<void> scheduleWateringNotification({required int id, required String plantName, required DateTime scheduledTime}) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
-      'Saatnya Menyiram! 🌿',
+      'Hai Flovers Saatnya Menyiram! 🌿',
       'Jangan lupa untuk memberi minum pada tanaman $plantName Anda hari ini.',
       tz.TZDateTime.from(scheduledTime, tz.local),
       const NotificationDetails(
@@ -41,7 +41,6 @@ class NotificationService {
           priority: Priority.high,
           icon: '@mipmap/ic_launcher',
           largeIcon: DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
-          // PERHATIKAN: baris androidScheduleMode sudah dihapus
         ),
         iOS: DarwinNotificationDetails(sound: 'default.wav', presentAlert: true, presentBadge: true, presentSound: true),
       ),

@@ -1,5 +1,4 @@
-// lib/network/api_constants.dart
 class ApiConstants {
   static const String perenualBaseUrl = 'https://perenual.com/api/v2';
-  static const String perenualApiKey = 'sk-k8SL6840f32ddc04810852'; // GANTI DENGAN API KEY ASLI MILIKMU!
+  static const String perenualApiKey = 'sk-k8SL6840f32ddc04810852';
 }

@@ -1,4 +1,3 @@
-// lib/views/tools/time_converter_screen.dart
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -7,8 +6,7 @@ import 'package:projekakhir_praktpm/utils/constants.dart';
 
 class TimeConverterScreen extends StatefulWidget {
   final String plantName;
-  final Map<String, dynamic>? wateringBenchmark; // Tetap gunakan Map jika ini strukturnya
-
+  final Map<String, dynamic>? wateringBenchmark; 
   const TimeConverterScreen({
     super.key,
     required this.plantName,
@@ -21,8 +19,8 @@ class TimeConverterScreen extends StatefulWidget {
 
 class _TimeConverterScreenState extends State<TimeConverterScreen> {
   TimeOfDay? _selectedLocalTime;
-  String? _localTimeZoneName; // Akan diisi secara dinamis
-  bool _isLocalTimeZoneLoading = true; // Untuk loading state timezone
+  String? _localTimeZoneName; 
+  bool _isLocalTimeZoneLoading = true;
 
   final Map<String, String> _targetTimeZonesDisplay = {
     'Asia/Jakarta': 'WIB (Jakarta)',
@@ -31,8 +29,8 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
     'Europe/London': 'London (GMT/BST)',
   };
 
-  Map<String, String> _convertedTimes = {};
-  bool _isLoadingConversion = false; // Untuk loading state saat konversi
+  final Map<String, String> _convertedTimes = {};
+  bool _isLoadingConversion = false; 
   String? _error;
 
   @override
@@ -55,7 +53,7 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
   } catch (e) {
     setState(() {
       _error = 'Gagal mendapatkan zona waktu lokal: ${e.toString()}. Menggunakan Asia/Jakarta sebagai default.';
-      _localTimeZoneName = 'Asia/Jakarta'; // Fallback
+      _localTimeZoneName = 'Asia/Jakarta'; 
     });
   } finally {
     setState(() {
@@ -85,7 +83,6 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
           _convertTime();
         } else if (!_isLocalTimeZoneLoading) {
           setState(() {
-            // Ini seharusnya tidak terjadi jika fallback di _loadLocalTimeZone berfungsi
             _error = 'Zona waktu lokal belum termuat. Silakan coba lagi.';
           });
         }
@@ -95,15 +92,12 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
 
   void _convertTime() {
     if (_selectedLocalTime == null || _localTimeZoneName == null) {
-      // Jika _localTimeZoneName masih null (misalnya karena error dan tidak ada fallback yang diinginkan),
-      // atau jika _selectedLocalTime belum dipilih, jangan lakukan apa-apa.
       return;
     }
 
     setState(() {
       _isLoadingConversion = true;
-      // Jangan hapus _error di sini, karena _error dari _loadLocalTimeZone mungkin masih relevan
-      // _error = null;
+
       _convertedTimes.clear();
     });
 
@@ -112,13 +106,13 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
       final localScheduledTime = DateTime(
           now.year, now.month, now.day, _selectedLocalTime!.hour, _selectedLocalTime!.minute);
 
-      // Pastikan _localTimeZoneName tidak null sebelum digunakan
+      
       final tz.Location localLocation = tz.getLocation(_localTimeZoneName!);
       final tz.TZDateTime tzScheduledTimeLocal = tz.TZDateTime.from(localScheduledTime, localLocation);
 
       _targetTimeZonesDisplay.forEach((tzName, display) {
         if (tzName == _localTimeZoneName) {
-          // Jika zona waktu target adalah zona waktu lokal pengguna
+          
           _convertedTimes[display] = '${DateFormat('HH:mm').format(tzScheduledTimeLocal)} (Lokal Anda)';
         } else {
           try {
@@ -127,13 +121,13 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
             _convertedTimes[display] = DateFormat('HH:mm').format(tzScheduledTimeTarget);
           } catch (e) {
             _convertedTimes[display] = 'Error';
-            // print("Error converting to $tzName: $e"); // Untuk debug
+            
           }
         }
       });
     } catch (e) {
       setState(() {
-        _error = (_error ?? '') + '\nError saat konversi waktu: ${e.toString()}'; // Gabungkan dengan error sebelumnya jika ada
+        _error = '${_error ?? ''}\nError saat konversi waktu: ${e.toString()}'; 
       });
     } finally {
       setState(() {
@@ -144,12 +138,12 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Mengambil value dan unit dari benchmark jika ada
+    
     String benchmarkText = 'Frekuensi penyiraman tidak tersedia.';
     if (widget.wateringBenchmark != null &&
         widget.wateringBenchmark!['value'] != null &&
         widget.wateringBenchmark!['unit'] != null) {
-      benchmarkText = 'Frekuensi Penyiraman: ${widget.wateringBenchmark!['value']} ${widget.wateringBenchmark!['unit']}';
+      benchmarkText = 'Penyiraman: ${widget.wateringBenchmark!['value']} ${widget.wateringBenchmark!['unit']}';
     }
 
 
@@ -157,7 +151,7 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
       appBar: AppBar(
         title: Text('Konversi Waktu: ${widget.plantName}'),
         backgroundColor: AppColors.primaryColor,
-        foregroundColor: Colors.white, // Tambahkan ini agar judul dan ikon back terlihat jelas
+        foregroundColor: Colors.white, 
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppPadding.mediumPadding),
@@ -187,8 +181,8 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
                 children: [
                   Text(
                     _localTimeZoneName != null
-                        ? 'Zona Waktu Lokal Terdeteksi: $_localTimeZoneName'
-                        : 'Zona waktu lokal tidak dapat ditentukan.', // Seharusnya tidak pernah muncul jika ada fallback
+                        ? '$_localTimeZoneName'
+                        : 'Zona waktu lokal tidak dapat ditentukan.', 
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.textColor),
                     textAlign: TextAlign.center,
                   ),
@@ -198,9 +192,9 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
                     label: Text(
                       _selectedLocalTime == null
                           ? 'Pilih Waktu Penyiraman Lokal'
-                          : 'Ubah Waktu: ${_selectedLocalTime!.format(context)}',
+                          : ': ${_selectedLocalTime!.format(context)}',
                     ),
-                    onPressed: _isLocalTimeZoneLoading ? null : _pickLocalTime, // Tombol disable jika timezone sedang loading
+                    onPressed: _isLocalTimeZoneLoading ? null : _pickLocalTime, 
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.accentColor,
                       foregroundColor: Colors.white,
@@ -211,11 +205,11 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
                   const SizedBox(height: AppPadding.largePadding),
                   if (_isLoadingConversion)
                     const Center(child: CircularProgressIndicator())
-                  else if (_error != null && !_error!.toLowerCase().contains("default.") && !_error!.toLowerCase().contains("konversi waktu")) // Tampilkan error load timezone jika signifikan
+                  else if (_error != null && !_error!.toLowerCase().contains("default.") && !_error!.toLowerCase().contains("konversi waktu")) 
                      Padding(
                         padding: const EdgeInsets.symmetric(vertical: AppPadding.mediumPadding),
                         child: Text(
-                          _error!, // Hanya tampilkan error jika bukan bagian dari pesan fallback standar
+                          _error!, 
                           style: const TextStyle(color: Colors.red, fontSize: 16),
                           textAlign: TextAlign.center,
                         ),
@@ -239,7 +233,7 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
                             child: ListTile(
                               title: Text(entry.key, style: TextStyle(color: AppColors.textColor, fontWeight: isLocal ? FontWeight.bold : FontWeight.w500)),
                               trailing: Text(
-                                entry.value.replaceFirst(' (Lokal Anda)', ''), // Hilangkan tag untuk tampilan
+                                entry.value.replaceFirst(' (Lokal Anda)', ''), 
                                 style: TextStyle(
                                   fontSize: 18,
                                   color: isLocal ? AppColors.primaryColor : AppColors.accentColor,
@@ -250,7 +244,7 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
                             ),
                           );
                         }),
-                         if (_error != null && _error!.toLowerCase().contains("konversi waktu")) // Tampilkan error konversi jika ada
+                         if (_error != null && _error!.toLowerCase().contains("konversi waktu")) 
                            Padding(
                              padding: const EdgeInsets.only(top: AppPadding.mediumPadding),
                              child: Text(
@@ -266,10 +260,10 @@ class _TimeConverterScreenState extends State<TimeConverterScreen> {
                     child: Text(
                       _isLocalTimeZoneLoading
                           ? 'Sedang mendeteksi zona waktu perangkat Anda...'
-                          : _error != null && _error!.toLowerCase().contains("default.") // Pesan jika menggunakan fallback
-                              ? 'Catatan: $_error' // Tampilkan pesan error fallback secara lengkap
+                          : _error != null && _error!.toLowerCase().contains("default.") 
+                              ? 'Catatan: $_error' 
                               : _localTimeZoneName != null
-                                  ? 'Catatan: Konversi waktu menggunakan zona waktu perangkat Anda ($_localTimeZoneName) sebagai basis waktu lokal Anda.'
+                                  ? 'Catatan: Konversi waktu menggunakan zona ($_localTimeZoneName) sebagai waktu lokal Anda.'
                                   : 'Catatan: Pilih waktu untuk melihat konversi.',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.hintColor, fontStyle: FontStyle.italic),

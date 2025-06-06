@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'plant_model.g.dart';
 
-@HiveType(typeId: 1) // typeId harus unik
+@HiveType(typeId: 1) 
 class Plant {
   @HiveField(0)
   final int id;
@@ -27,11 +27,9 @@ class Plant {
   final String description;
   @HiveField(10)
   final Map<String, dynamic>? defaultImage;
-
-  // TAMBAHAN FIELD BARU
-  @HiveField(11) // Pastikan nomor ini unik dan berurutan
+  @HiveField(11) 
   final String? family;
-  @HiveField(12) // Pastikan nomor ini unik dan berurutan
+  @HiveField(12) 
   final String? genus;
 
   Plant({
@@ -46,8 +44,8 @@ class Plant {
     required this.sunlight,
     required this.description,
     this.defaultImage,
-    this.family, // Tambahkan di constructor
-    this.genus,  // Tambahkan di constructor
+    this.family, 
+    this.genus,  
   });
 
   factory Plant.fromJson(Map<String, dynamic> json) {
@@ -63,8 +61,8 @@ class Plant {
       sunlight: json['sunlight'] is List ? List<dynamic>.from(json['sunlight']) : [],
       description: json['description'] as String? ?? 'No description available.',
       defaultImage: json['default_image'] is Map ? Map<String, dynamic>.from(json['default_image']) : null,
-      family: json['family'] as String?,   // Tambahkan parsing untuk family
-      genus: json['genus'] as String?,     // Tambahkan parsing untuk genus
+      family: json['family'] as String?,   
+      genus: json['genus'] as String?,     
     );
   }
 
@@ -81,13 +79,13 @@ class Plant {
       'sunlight': sunlight,
       'description': description,
       'default_image': defaultImage,
-      'family': family, // Tambahkan ke toJson
-      'genus': genus,   // Tambahkan ke toJson
+      'family': family, 
+      'genus': genus,   
     };
   }
 }
 
-@HiveType(typeId: 2) // typeId harus unik
+@HiveType(typeId: 2) 
 class Bookmark {
   @HiveField(0)
   final String userId;

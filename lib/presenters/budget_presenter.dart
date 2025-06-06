@@ -1,16 +1,13 @@
-// lib/presenters/budget_presenter.dart
-import 'package:flutter/foundation.dart'; // Untuk ChangeNotifier
+import 'package:flutter/foundation.dart';
 import 'package:projekakhir_praktpm/models/budget_item_model.dart';
 import 'package:projekakhir_praktpm/services/hive_service.dart';
 import 'package:uuid/uuid.dart';
 
 class BudgetPresenter extends ChangeNotifier {
-  final HiveService _hiveService = HiveService(); // Gunakan instance yang sama
+  final HiveService _hiveService = HiveService();
   List<BudgetItem> _budgetItems = [];
 
   List<BudgetItem> get budgetItems => _budgetItems;
-
-
 
   Future<void> loadBudgetItems(String userId) async {
     if (userId.isEmpty) { // Jangan load jika userId kosong
@@ -42,11 +39,11 @@ class BudgetPresenter extends ChangeNotifier {
       createdAt: DateTime.now(),
     );
     await _hiveService.addBudgetItem(newItem);
-    await loadBudgetItems(userId); // Muat ulang dan notifikasi listener
+    await loadBudgetItems(userId); 
   }
 
   Future<void> removeBudgetItem(String itemId, String userId) async {
     await _hiveService.removeBudgetItem(itemId);
-    await loadBudgetItems(userId); // Muat ulang dan notifikasi listener
+    await loadBudgetItems(userId); 
   }
 }

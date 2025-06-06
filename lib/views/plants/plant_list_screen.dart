@@ -1,38 +1,13 @@
-import 'dart:async'; // Untuk StreamSubscription
-import 'dart:math'; // Untuk Random
+import 'dart:async'; 
+import 'dart:math'; 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sensors_plus/sensors_plus.dart'; // Import sensors_plus
+import 'package:sensors_plus/sensors_plus.dart'; 
 
-// GANTI DENGAN IMPORT PROYEKMU YANG SEBENARNYA
 import 'package:projekakhir_praktpm/presenters/plant_presenter.dart';
 import 'package:projekakhir_praktpm/models/plant_model.dart';
-import 'package:projekakhir_praktpm/utils/constants.dart'; // Harusnya berisi AppColors, AppPadding, AppConstants
-import 'package:projekakhir_praktpm/views/plants/plant_card.dart'; // Harusnya berisi widget PlantCard
-
-// --- HAPUS ATAU SESUAIKAN DUMMY CLASSES DI BAWAH INI JIKA SUDAH ADA DI PROYEKMU ---
-// class AppColors {
-//   static const Color primaryColor = Colors.white;
-//   static const Color accentColor = Colors.green;
-//   static const Color dangerColor = Colors.red;
-//   static const Color textColor = Colors.black;
-//   static const Color secondaryTextColor = Colors.grey;
-//   static const Color hintColor = Colors.black38;
-//   static const Color softGrey = Colors.black12;
-// }
-
-// class AppPadding {
-//   static const double tinyPadding = 5.0;
-//   static const double smallPadding = 8.0;
-//   static const double mediumPadding = 16.0;
-// }
-
-// class AppConstants {
-//   static const String searchHint = "Cari Tanaman...";
-//   static const String genericErrorMessage = "Oops! Terjadi kesalahan:";
-//   static const String noNewsFound = "Yah, tidak ada tanaman yang ditemukan."; // Sudah disesuaikan
-// }
-// --- BATAS DUMMY CLASSES ---
+import 'package:projekakhir_praktpm/utils/constants.dart'; 
+import 'package:projekakhir_praktpm/views/plants/plant_card.dart'; 
 
 
 class PlantListScreen extends StatefulWidget {
@@ -47,10 +22,10 @@ class _PlantListScreenState extends State<PlantListScreen> {
   final ScrollController _scrollController = ScrollController();
   StreamSubscription? _accelerometerSubscription;
 
-  static const double _shakeThreshold = 2.5; // Ambang batas kekuatan goyangan (sesuaikan G-Force)
-  static const int _shakeSlopTimeMS = 500; // Waktu minimum antar goyangan yang terdeteksi
-  static const int _shakeCountResetTimeMS = 3000; // Waktu untuk mereset hitungan goyangan
-  static const double earthGravity = 9.80665; // Konstanta gravitasi
+  static const double _shakeThreshold = 2.2; 
+  static const int _shakeSlopTimeMS = 500; 
+  static const int _shakeCountResetTimeMS = 3000; 
+  static const double earthGravity = 9.80665; 
 
   int _shakeCount = 0;
   int _lastShakeTimestamp = 0;
@@ -79,7 +54,7 @@ class _PlantListScreenState extends State<PlantListScreen> {
       }
     });
 
-    // Listener untuk lazy loading/infinite scroll
+    
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         _loadMorePlants();
@@ -88,28 +63,28 @@ class _PlantListScreenState extends State<PlantListScreen> {
 
     // Listener untuk accelerometer (shake detection)
     _accelerometerSubscription = accelerometerEventStream(
-            samplingPeriod: const Duration(milliseconds: 200)) // Sesuaikan frekuensi sampling
+            samplingPeriod: const Duration(milliseconds: 200)) 
         .listen(
       (AccelerometerEvent event) {
         _handleAccelerometerEvent(event);
       },
       onError: (error) {
         print('[PlantListScreen] Accelerometer Error: $error');
-        // Pertimbangkan untuk menampilkan pesan error kepada pengguna via SnackBar jika sensor bermasalah
+        
       },
       cancelOnError: true,
     );
 
-    // Listener untuk memperbarui UI (misal tombol clear) saat teks di search field berubah
+
     _searchController.addListener(() {
       if (mounted) {
-        setState(() {}); // Rebuild untuk menampilkan/menyembunyikan tombol clear
+        setState(() {}); 
       }
     });
   }
 
   void _handleAccelerometerEvent(AccelerometerEvent event) {
-    if (_isDialogShowing) return; // Jangan proses jika dialog sudah aktif
+    if (_isDialogShowing) return; 
 
     double x = event.x;
     double y = event.y;
@@ -117,16 +92,16 @@ class _PlantListScreenState extends State<PlantListScreen> {
 
     double accelerationMagnitude = sqrt(x * x + y * y + z * z);
     double gForce = accelerationMagnitude / earthGravity;
-    // print('[PlantListScreen] Current G-Force: ${gForce.toStringAsFixed(2)}'); // Uncomment untuk debug G-Force
+    
 
     if (gForce > _shakeThreshold) {
       final now = DateTime.now().millisecondsSinceEpoch;
       if ((now - _lastShakeTimestamp) < _shakeSlopTimeMS) {
-        return; // Goyangan terlalu cepat, abaikan
+        return; 
       }
 
       if ((now - _lastShakeTimestamp) > _shakeCountResetTimeMS) {
-        _shakeCount = 0; // Reset hitungan jika sudah terlalu lama
+        _shakeCount = 0; 
       }
 
       _lastShakeTimestamp = now;
@@ -135,12 +110,12 @@ class _PlantListScreenState extends State<PlantListScreen> {
 
 
       if (_shakeCount >= 1) { // Cukup satu goyangan yang memenuhi syarat untuk memicu
-        _shakeCount = 0; // Reset hitungan setelah aksi
+        _shakeCount = 0; 
         
         final plantPresenter = Provider.of<PlantPresenter>(context, listen: false);
         print("[PlantListScreen] Shake action triggered. Current state - isLoading: ${plantPresenter.isLoading}, plantList.isEmpty: ${plantPresenter.plantList.isEmpty}");
 
-        if (!_isDialogShowing) { // Pastikan tidak ada dialog lain yang sedang proses tampil
+        if (!_isDialogShowing) {
           _showRandomPlantDialog();
         }
       }
@@ -153,7 +128,7 @@ class _PlantListScreenState extends State<PlantListScreen> {
         plant.defaultImage!['regular_url'].isNotEmpty) {
       return plant.defaultImage!['regular_url'];
     }
-    return ''; // Kembalikan string kosong jika tidak ada URL gambar
+    return ''; 
   }
 
   void _showRandomPlantDialog() {
@@ -163,7 +138,7 @@ class _PlantListScreenState extends State<PlantListScreen> {
     }
 
     final plantPresenter = Provider.of<PlantPresenter>(context, listen: false);
-    ScaffoldMessenger.of(context).removeCurrentSnackBar(); // Hapus snackbar sebelumnya
+    ScaffoldMessenger.of(context).removeCurrentSnackBar(); 
 
     // PERUBAHAN UTAMA: Cek kondisi sebelum menampilkan dialog
     if (plantPresenter.isLoading) {
@@ -171,10 +146,10 @@ class _PlantListScreenState extends State<PlantListScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Data tanaman sedang dimuat. Coba goyangkan lagi nanti!'),
-          backgroundColor: Colors.orangeAccent, // Warna untuk status loading
+          backgroundColor: Colors.orangeAccent, 
         ),
       );
-      return; // Keluar dari fungsi jika sedang loading
+      return; 
     }
 
     if (plantPresenter.plantList.isEmpty) {
@@ -182,12 +157,12 @@ class _PlantListScreenState extends State<PlantListScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Daftar tanaman masih kosong. Muat data dulu ya!'),
-            backgroundColor: AppColors.dangerColor), // Gunakan warna dari AppColors
+            backgroundColor: AppColors.dangerColor), 
       );
-      return; // Keluar dari fungsi jika daftar kosong
+      return; 
     }
 
-    // Jika lolos semua pengecekan, lanjutkan menampilkan dialog
+    
     final random = Random();
     final randomPlant = plantPresenter.plantList[random.nextInt(plantPresenter.plantList.length)];
     final String imageUrl = _getImageUrlFromPlant(randomPlant);
@@ -199,7 +174,7 @@ class _PlantListScreenState extends State<PlantListScreen> {
 
     showDialog(
       context: context,
-      barrierDismissible: false, // Pengguna harus menekan tombol untuk menutup
+      barrierDismissible: false, 
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           backgroundColor: AppColors.primaryColor.withOpacity(0.97),
@@ -208,7 +183,7 @@ class _PlantListScreenState extends State<PlantListScreen> {
             children: [
               const Icon(Icons.eco_rounded, color: AppColors.accentColor, size: 28),
               const SizedBox(width: AppPadding.smallPadding),
-              Expanded( // Agar teks judul tidak overflow jika panjang
+              Expanded( 
                 child: Text(
                   'Tanaman Untukmu!',
                   style: TextStyle(
@@ -222,10 +197,10 @@ class _PlantListScreenState extends State<PlantListScreen> {
             ],
           ),
           content: Column(
-            mainAxisSize: MainAxisSize.min, // Agar dialog tidak memenuhi layar
+            mainAxisSize: MainAxisSize.min, 
             children: <Widget>[
               SizedBox(
-                height: 150, // Tinggi tetap untuk konsistensi
+                height: 150, 
                 width: double.infinity,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(AppPadding.smallPadding),

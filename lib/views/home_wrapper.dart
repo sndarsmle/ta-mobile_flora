@@ -1,7 +1,4 @@
-// lib/views/home_wrapper.dart
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:projekakhir_praktpm/presenters/user_presenter.dart';
 import 'package:projekakhir_praktpm/views/plants/plant_list_screen.dart';
 import 'package:projekakhir_praktpm/views/plants/my_plants_screen.dart';
 import 'package:projekakhir_praktpm/views/auth/profile_screen.dart';
@@ -33,9 +30,6 @@ class _HomeWrapperState extends State<HomeWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    // final userPresenter = context.watch<UserPresenter>();
-   
-
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
@@ -51,12 +45,12 @@ class _HomeWrapperState extends State<HomeWrapper> {
             const SizedBox(width: AppPadding.smallPadding), 
             Text(
               _selectedIndex == 0
-                  ? 'Dashboard Tanaman'
+                  ? 'DASHBOARD'
                   : _selectedIndex == 1
-                      ? 'Tanaman Favorit'
-                      : _selectedIndex == 2 // TAMBAHAN: Judul untuk Peta
-                          ? 'Cek Cuaca' // Ganti dengan judul yang Anda inginkan untuk peta
-                          : 'Profil Pengguna', // Ini akan untuk index 3 sekarang
+                      ? 'KOLEKSI TANAMAN'
+                      : _selectedIndex == 2 
+                          ? 'CEK CUACA' 
+                          : 'PROFIL', 
               style: TextStyle(color: AppColors.textColor),
             ),
           ],
@@ -86,8 +80,8 @@ class _HomeWrapperState extends State<HomeWrapper> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildNavBarItem(0, Icons.grass, 'Tanaman'),
-              _buildNavBarItem(1, Icons.favorite, 'Favorit'),
-              _buildNavBarItem(2, Icons.map_outlined, 'Cuaca'),
+              _buildNavBarItem(1, Icons.folder, 'Koleksi'),
+              _buildNavBarItem(2, Icons.water_drop, 'Cuaca'),
               _buildNavBarItem(3, Icons.person, 'Profil'),
             ],
           ),

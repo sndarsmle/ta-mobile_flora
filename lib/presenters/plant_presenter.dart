@@ -1,38 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:projekakhir_praktpm/models/plant_model.dart';
-import 'package:projekakhir_praktpm/network/plant_api_service.dart'; // Ganti news_api_service.dart menjadi plant_api_service.dart
+import 'package:projekakhir_praktpm/network/plant_api_service.dart'; 
 
-class PlantPresenter extends ChangeNotifier { // Ganti NewsPresenter menjadi PlantPresenter
-  final PlantApi plantApi; // Ganti NewsApi menjadi PlantApi
-  List<Plant> _plantList = []; // Ganti _newsList menjadi _plantList
+class PlantPresenter extends ChangeNotifier { 
+  final PlantApi plantApi; 
+  List<Plant> _plantList = []; 
   bool _isLoading = false;
   String? _errorMessage;
 
   int _currentPage = 1; 
-  final int _pageSize = 30; // Perenual API default per_page adalah 30
-  bool _hasMorePlants = true; // Ganti _hasMoreNews menjadi _hasMorePlants
+  final int _pageSize = 30; 
+  bool _hasMorePlants = true; 
   String _currentQuery = ''; 
 
-  PlantPresenter(this.plantApi); // Ganti newsApi menjadi plantApi
+  PlantPresenter(this.plantApi); 
 
-  List<Plant> get plantList => _plantList; // Ganti newsList menjadi plantList
+  List<Plant> get plantList => _plantList; 
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
-  bool get hasMorePlants => _hasMorePlants; // Ganti hasMoreNews menjadi hasMorePlants
+  bool get hasMorePlants => _hasMorePlants; 
 
   void _resetPagination() {
     _currentPage = 1;
     _hasMorePlants = true;
-    _plantList = []; // Ganti _newsList menjadi _plantList
+    _plantList = []; 
     _errorMessage = null;
   }
 
-  Future<void> loadPlants({String? query, bool isLoadMore = false}) async { // Ganti searchNews dan getNewsByCategory
+  Future<void> loadPlants({String? query, bool isLoadMore = false}) async { 
     if (_isLoading) return; 
 
     if (!isLoadMore) {
       _resetPagination();
-      _currentQuery = query ?? ''; // Simpan query jika ada
+      _currentQuery = query ?? ''; 
     } else if (!_hasMorePlants) {
       return; 
     }
@@ -41,7 +41,6 @@ class PlantPresenter extends ChangeNotifier { // Ganti NewsPresenter menjadi Pla
     notifyListeners();
 
     try {
-      // Panggil getSpeciesList dari PlantApi
       final newPlants = await plantApi.getSpeciesList(query: _currentQuery, page: _currentPage, pageSize: _pageSize);
 
       if (newPlants.isEmpty || newPlants.length < _pageSize) {
@@ -49,12 +48,12 @@ class PlantPresenter extends ChangeNotifier { // Ganti NewsPresenter menjadi Pla
       } else {
         _currentPage++; 
       }
-      _plantList.addAll(newPlants); // Ganti _newsList menjadi _plantList
+      _plantList.addAll(newPlants); 
       _errorMessage = null;
     } catch (e) {
       _errorMessage = 'Failed to load plants: $e';
       if (!isLoadMore) { 
-        _plantList = []; // Ganti _newsList menjadi _plantList
+        _plantList = []; 
       }
       _hasMorePlants = false; 
     } finally {

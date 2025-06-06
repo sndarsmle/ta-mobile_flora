@@ -218,15 +218,15 @@ class ProfileScreen extends StatelessWidget {
                   }
                 },
                 icon: const Icon(Icons.logout,
-                    color: AppColors.textColor), // Warna ikon disesuaikan
+                    color: AppColors.textColor), 
                 label: Text('Logout',
                     style: Theme.of(context)
                         .textTheme
-                        .labelLarge // Menggunakan style dari tema
+                        .labelLarge 
                     ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.dangerColor,
-                  foregroundColor: AppColors.textColor, // Teks jadi putih
+                  foregroundColor: AppColors.textColor, 
                   minimumSize: const Size.fromHeight(50),
                 ),
               ),

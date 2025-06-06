@@ -1,12 +1,11 @@
-// lib/models/budget_item_model.dart
 import 'package:hive/hive.dart';
 
-part 'budget_item_model.g.dart'; // Akan digenerate
+part 'budget_item_model.g.dart';
 
-@HiveType(typeId: 4) // Pastikan typeId unik (0:User, 1:Plant, 2:Bookmark, 3:Comment)
+@HiveType(typeId: 4)
 class BudgetItem {
   @HiveField(0)
-  final String id; // ID unik untuk setiap item budget
+  final String id; 
 
   @HiveField(1)
   final int plantId;
@@ -15,18 +14,18 @@ class BudgetItem {
   final String plantName;
 
   @HiveField(3)
-  final String originalPriceIDR; // Misal "Rp 25.000 - Rp 75.000" atau satu nilai
+  final String originalPriceIDR; 
 
   @HiveField(4)
-  final String targetCurrency; // Misal "USD"
+  final String targetCurrency; 
 
   @HiveField(5)
-  final String convertedPrice; // Misal "$ 1.56 - $ 4.69" atau satu nilai
+  final String convertedPrice; 
 
   @HiveField(6)
   final DateTime createdAt;
 
-  @HiveField(7) // FIELD BARU UNTUK USER ID
+  @HiveField(7) 
   final String userId;
 
   BudgetItem({

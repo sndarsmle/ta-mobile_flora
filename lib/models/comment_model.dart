@@ -1,9 +1,8 @@
-// lib/models/comment_model.dart
 import 'package:hive/hive.dart';
 
 part 'comment_model.g.dart';
 
-@HiveType(typeId: 3) // typeId harus unik
+@HiveType(typeId: 3) 
 class Comment {
   @HiveField(0)
   final String id;

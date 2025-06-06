@@ -13,7 +13,7 @@ import 'package:projekakhir_praktpm/services/notification_service.dart';
 import 'dart:math';
 
 class PlantDetailScreen extends StatefulWidget {
-  final Plant plant; // Ini adalah plant dari list, mungkin minim info
+  final Plant plant; 
   const PlantDetailScreen({super.key, required this.plant});
 
   @override
@@ -21,7 +21,7 @@ class PlantDetailScreen extends StatefulWidget {
 }
 
 class _PlantDetailScreenState extends State<PlantDetailScreen> {
-  Plant? _detailedPlant; // Untuk menyimpan data plant yang sudah lengkap
+  Plant? _detailedPlant; 
   bool _isLoading = true;
   String? _errorMessage;
 
@@ -64,7 +64,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: AppColors.dangerColor, //
+        backgroundColor: AppColors.dangerColor, 
         duration: const Duration(seconds: 3),
       ),
     );
@@ -75,7 +75,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: AppColors.successColor, //
+        backgroundColor: AppColors.successColor, 
         duration: const Duration(seconds: 3),
       ),
     );
@@ -92,7 +92,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.dark( // Agar tema date picker cocok
+            colorScheme: const ColorScheme.dark( 
               primary: AppColors.accentColor,
               onPrimary: AppColors.primaryColor,
               onSurface: AppColors.textColor,
@@ -110,7 +110,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
          builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
-               colorScheme: const ColorScheme.dark( // Agar tema time picker cocok
+               colorScheme: const ColorScheme.dark( 
                 primary: AppColors.accentColor,
                 onPrimary: AppColors.primaryColor,
                 onSurface: AppColors.textColor,
@@ -169,7 +169,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
         actions: [
           IconButton(
             icon: Icon(
-              isBookmarked ? Icons.favorite : Icons.favorite_border,
+              isBookmarked ? Icons.bookmark : Icons.bookmark_border,
               color: isBookmarked ? AppColors.accentColor : AppColors.textColor, //
             ),
             onPressed: () {

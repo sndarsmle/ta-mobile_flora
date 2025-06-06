@@ -1,4 +1,3 @@
-// lib/views/auth/register_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:projekakhir_praktpm/models/user_model.dart';

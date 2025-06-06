@@ -1,5 +1,3 @@
-// lib/models/weather_model.dart
-
 class WeatherData {
   final String cityName;
   final String description;
@@ -18,7 +16,6 @@ class WeatherData {
   });
 
   factory WeatherData.fromJson(Map<String, dynamic> json) {
-    // Kapitalisasi huruf pertama deskripsi
     String desc = json['weather'][0]['description'] ?? 'Tidak diketahui';
     desc = desc[0].toUpperCase() + desc.substring(1);
 
